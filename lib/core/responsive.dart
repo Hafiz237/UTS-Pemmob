@@ -5,7 +5,8 @@ class Responsive {
 
   static const double tabletBreakpoint = 600;
   static const double desktopBreakpoint = 1000;
-
+  static double u(BuildContext c, double fraction) =>
+      contentWidth(c) * fraction;
   static double width(BuildContext c) => MediaQuery.sizeOf(c).width;
   static double height(BuildContext c) => MediaQuery.sizeOf(c).height;
 
