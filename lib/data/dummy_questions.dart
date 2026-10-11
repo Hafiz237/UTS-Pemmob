@@ -2,7 +2,7 @@ import '../models/question.dart';
 
 const List<Question> dummyQuestions = [
   Question(
-    category: 'Organisasi arsitektur komputer',
+    category: 'PRGANISASI ARSITEKTUR KOMPUTER',
     text: 'Apa kepanjangan dari CPU?',
     options: [
       'Central Process Unit',
@@ -15,7 +15,7 @@ const List<Question> dummyQuestions = [
     'CPU (Central Processing Unit) adalah otak komputer yang menjalankan instruksi program.',
   ),
   Question(
-    category: 'Dasar pemrograman',
+    category: 'DASAR PEMROGRAMAN',
     text: 'Bilangan biner 1010 sama dengan bilangan desimal berapa?',
     options: ['8', '10', '12', '14'],
     correctIndex: 1,
@@ -30,7 +30,7 @@ const List<Question> dummyQuestions = [
     'Stack seperti tumpukan piring: elemen terakhir yang masuk adalah yang pertama keluar.',
   ),
   Question(
-    category: 'WEB',
+    category: 'PEMROGRAMAN WEB',
     text: 'HTML adalah singkatan dari...',
     options: [
       'HyperText Markup Language',
@@ -43,7 +43,7 @@ const List<Question> dummyQuestions = [
     'HTML adalah bahasa markup untuk menyusun struktur halaman web.',
   ),
   Question(
-    category: 'ALGORITMA',
+    category: 'DESAIN DAN ANALISIS ALGORITMA',
     text: 'Berapa kompleksitas waktu algoritma Binary Search?',
     options: ['O(n)', 'O(n²)', 'O(1)', 'O(log n)'],
     correctIndex: 3,
@@ -51,7 +51,7 @@ const List<Question> dummyQuestions = [
     'Binary Search membagi dua ruang pencarian di setiap langkah, sehingga O(log n). Syaratnya data harus terurut.',
   ),
   Question(
-    category: 'KEAMANAN',
+    category: 'KEAMANAN DATA DAN INFORMASI',
     text: 'Protokol yang mengenkripsi komunikasi antara browser dan website adalah...',
     options: ['HTTP', 'FTP', 'HTTPS', 'SMTP'],
     correctIndex: 2,
@@ -59,7 +59,7 @@ const List<Question> dummyQuestions = [
     'HTTPS = HTTP + TLS/SSL, sehingga data yang dikirim terenkripsi.',
   ),
   Question(
-    category: 'HARDWARE',
+    category: 'ORGANSISASI ARSITEKTUR KOMPUTER',
     text: 'Memori yang isinya hilang saat komputer dimatikan disebut...',
     options: ['Volatile', 'Non-volatile', 'Permanent', 'Cache disk'],
     correctIndex: 0,
@@ -67,7 +67,7 @@ const List<Question> dummyQuestions = [
     'RAM bersifat volatile: butuh listrik untuk menyimpan data, berbeda dengan SSD/HDD.',
   ),
   Question(
-    category: 'PEMROGRAMAN',
+    category: 'PEMROGRAMAN MOBILE',
     text: 'Bahasa pemrograman yang dipakai Flutter untuk membangun aplikasi adalah...',
     options: ['Kotlin', 'Dart', 'Swift', 'Java'],
     correctIndex: 1,
@@ -82,7 +82,7 @@ const List<Question> dummyQuestions = [
     'SELECT dipakai untuk membaca data, contoh: SELECT * FROM mahasiswa;',
   ),
   Question(
-    category: 'JARINGAN',
+    category: 'JARINGAN KOMPUTER',
     text: 'Jaringan komputer yang mencakup area terbatas seperti satu gedung disebut...',
     options: ['WAN', 'LAN', 'MAN', 'VPN'],
     correctIndex: 1,

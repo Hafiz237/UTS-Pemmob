@@ -5,18 +5,9 @@ class Responsive {
 
   static const double tabletBreakpoint = 600;
   static const double desktopBreakpoint = 1000;
-  static double u(BuildContext c, double fraction) =>
-      contentWidth(c) * fraction;
+
   static double width(BuildContext c) => MediaQuery.sizeOf(c).width;
-  static double height(BuildContext c) => MediaQuery.sizeOf(c).height;
 
-  static bool isTablet(BuildContext c) => width(c) >= tabletBreakpoint;
-  static bool isWide(BuildContext c) => width(c) >= desktopBreakpoint;
-  static bool isLandscape(BuildContext c) =>
-      MediaQuery.orientationOf(c) == Orientation.landscape;
-
-  static double w(BuildContext c, double fraction) => width(c) * fraction;
-  static double h(BuildContext c, double fraction) => height(c) * fraction;
   static double contentWidth(BuildContext c) {
     final w = width(c);
     if (w >= desktopBreakpoint) return w * 0.5;
@@ -24,9 +15,18 @@ class Responsive {
     return w;
   }
 
-  static double font(BuildContext c, double fraction, {double? max}) {
-    final size = width(c) * fraction;
-    final limit = max ?? (isTablet(c) ? 34.0 : 28.0);
-    return size.clamp(12.0, limit);
+  static bool useTwoColumns(BuildContext c) {
+    final landscape = MediaQuery.orientationOf(c) == Orientation.landscape;
+    return width(c) >= desktopBreakpoint ||
+        (width(c) >= tabletBreakpoint && landscape);
   }
+
+  static double pageWidth(BuildContext c) =>
+      useTwoColumns(c) ? width(c) * 0.9 : contentWidth(c);
+
+  static double u(BuildContext c, double fraction) =>
+      contentWidth(c) * fraction;
+
+  static double font(BuildContext c, double fraction, {double max = 30}) =>
+      (width(c) * fraction).clamp(12.0, max);
 }

@@ -8,6 +8,7 @@ import '../widgets/option_card.dart';
 import '../widgets/quiz_progress_bar.dart';
 import '../widgets/terminal_card.dart';
 import '../widgets/theme_toggle_button.dart';
+import '../widgets/adaptive_pane.dart';
 import 'result_page.dart';
 
 class QuizPage extends StatelessWidget {
@@ -58,6 +59,79 @@ class QuizPage extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final gap = Responsive.u(context, 0.04);
 
+    final questionCard = TerminalCard(
+      title: 'soal_${quiz.currentIndex + 1}.exe',
+      child: Text.rich(
+        TextSpan(children: [
+          TextSpan(
+            text: '> ',
+            style: TextStyle(
+              color: scheme.primary,
+              fontFamily: 'JetBrainsMono',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          TextSpan(text: q.text),
+        ]),
+        style: TextStyle(
+          fontSize: Responsive.font(context, 0.048),
+          fontWeight: FontWeight.w700,
+          color: scheme.onSurface,
+        ),
+      ),
+    );
+
+    final answerPanel = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (int i = 0; i < q.options.length; i++)
+          Padding(
+            padding: EdgeInsets.only(bottom: gap * 0.6),
+            child: OptionCard(
+              index: i,
+              text: q.options[i],
+              state: _stateFor(i, quiz),
+              onTap: quiz.isAnswered
+                  ? null
+                  : () => context.read<QuizProvider>().selectAnswer(i),
+            ),
+          ),
+        if (quiz.isAnswered) ...[
+          Text(
+            q.explanation,
+            style: TextStyle(
+              fontSize: Responsive.font(context, 0.038),
+              color: scheme.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: gap),
+        ],
+        Row(
+          children: [
+            Expanded(
+              child: AppButton(
+                label: 'Kembali',
+                icon: Icons.arrow_back_rounded,
+                filled: false,
+                onPressed:
+                quiz.isFirst ? null : context.read<QuizProvider>().previous,
+              ),
+            ),
+            SizedBox(width: gap),
+            Expanded(
+              child: AppButton(
+                label: quiz.isLast ? 'Selesai' : 'Lanjut',
+                icon: quiz.isLast
+                    ? Icons.flag_rounded
+                    : Icons.arrow_forward_rounded,
+                onPressed: quiz.isAnswered ? () => _onNext(context, quiz) : null,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -69,8 +143,8 @@ class QuizPage extends StatelessWidget {
             child: SingleChildScrollView(
               padding: EdgeInsets.all(Responsive.u(context, 0.05)),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: Responsive.contentWidth(context)),
+                constraints:
+                BoxConstraints(maxWidth: Responsive.pageWidth(context)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -118,77 +192,7 @@ class QuizPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: gap),
-                    TerminalCard(
-                      title: 'soal_${quiz.currentIndex + 1}.exe',
-                      child: Text.rich(
-                        TextSpan(children: [
-                          TextSpan(
-                            text: '> ',
-                            style: TextStyle(
-                              color: scheme.primary,
-                              fontFamily: 'JetBrainsMono',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          TextSpan(text: q.text),
-                        ]),
-                        style: TextStyle(
-                          fontSize: Responsive.font(context, 0.048),
-                          fontWeight: FontWeight.w700,
-                          color: scheme.onSurface,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: gap),
-                    for (int i = 0; i < q.options.length; i++)
-                      Padding(
-                        padding: EdgeInsets.only(bottom: gap * 0.6),
-                        child: OptionCard(
-                          index: i,
-                          text: q.options[i],
-                          state: _stateFor(i, quiz),
-                          onTap: quiz.isAnswered
-                              ? null
-                              : () =>
-                              context.read<QuizProvider>().selectAnswer(i),
-                        ),
-                      ),
-                    if (quiz.isAnswered) ...[
-                      Text(
-                        q.explanation,
-                        style: TextStyle(
-                          fontSize: Responsive.font(context, 0.038),
-                          color: scheme.onSurfaceVariant,
-                        ),
-                      ),
-                      SizedBox(height: gap),
-                    ],
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppButton(
-                            label: 'Kembali',
-                            icon: Icons.arrow_back_rounded,
-                            filled: false,
-                            onPressed: quiz.isFirst
-                                ? null
-                                : context.read<QuizProvider>().previous,
-                          ),
-                        ),
-                        SizedBox(width: gap),
-                        Expanded(
-                          child: AppButton(
-                            label: quiz.isLast ? 'Selesai' : 'Lanjut',
-                            icon: quiz.isLast
-                                ? Icons.flag_rounded
-                                : Icons.arrow_forward_rounded,
-                            onPressed: quiz.isAnswered
-                                ? () => _onNext(context, quiz)
-                                : null,
-                          ),
-                        ),
-                      ],
-                    ),
+                    AdaptivePane(first: questionCard, second: answerPanel),
                   ],
                 ),
               ),

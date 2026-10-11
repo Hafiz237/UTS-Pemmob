@@ -3,78 +3,72 @@ import '../data/dummy_questions.dart';
 import '../models/question.dart';
 
 class QuizProvider extends ChangeNotifier {
-  final List<Question> _questions = dummyQuestions;
+  final List<Question> questions = dummyQuestions;
 
-  String _userName = '';
-  int _currentIndex = 0;
-  late List<int?> _answers = List.filled(_questions.length, null);
+  String userName = '';
+  int currentIndex = 0;
+  late List<int?> _answers;
 
-  String get userName => _userName;
-  List<Question> get questions => _questions;
-  int get totalQuestions => _questions.length;
-  int get currentIndex => _currentIndex;
-  Question get currentQuestion => _questions[_currentIndex];
-  List<bool?> get results => List.generate(
-    _questions.length,
-        (i) => _answers[i] == null ? null : isCorrectAt(i),
-  );
-  int? get selectedAnswer => _answers[_currentIndex];
-  bool get isAnswered => selectedAnswer != null;
-
-  bool get isFirst => _currentIndex == 0;
-  bool get isLast => _currentIndex == _questions.length - 1;
-
-  int get answeredCount => _answers.where((a) => a != null).length;
-  double get progress => (_currentIndex + 1) / _questions.length;
-
-  int get score {
-    int total = 0;
-    for (int i = 0; i < _questions.length; i++) {
-      if (_answers[i] == _questions[i].correctIndex) total++;
-    }
-    return total;
+  QuizProvider() {
+    _answers = List.filled(questions.length, null);
   }
 
-  int get percentage => ((score / _questions.length) * 100).round();
+  int get totalQuestions => questions.length;
+  Question get currentQuestion => questions[currentIndex];
+
+  int? get selectedAnswer => _answers[currentIndex];
+  bool get isAnswered => selectedAnswer != null;
+  bool get isFirst => currentIndex == 0;
+  bool get isLast => currentIndex == questions.length - 1;
+
+  bool isCorrectAt(int i) => _answers[i] == questions[i].correctIndex;
+
+  List<bool?> get results => [
+    for (int i = 0; i < questions.length; i++)
+      _answers[i] == null ? null : isCorrectAt(i),
+  ];
+
+  int get score => List.generate(questions.length, isCorrectAt)
+      .where((benar) => benar)
+      .length;
+
+  int get percentage => (score / totalQuestions * 100).round();
 
   String get rank {
-    if (percentage >= 90) return 'Master Dev';
-    if (percentage >= 70) return 'Senior Dev';
-    if (percentage >= 40) return 'Junior Dev';
-    return 'Script Kiddie';
+    if (percentage >= 90) return 'Master Developer';
+    if (percentage >= 70) return 'Senior Developer';
+    if (percentage >= 40) return 'Junior Developer';
+    return 'pemula';
   }
 
-  bool isCorrectAt(int index) => _answers[index] == _questions[index].correctIndex;
-  int? answerAt(int index) => _answers[index];
-
   void setUserName(String name) {
-    _userName = name.trim();
+    userName = name.trim();
     notifyListeners();
   }
 
   void selectAnswer(int optionIndex) {
     if (isAnswered) return;
-    _answers[_currentIndex] = optionIndex;
+    _answers[currentIndex] = optionIndex;
     notifyListeners();
   }
 
   void next() {
     if (!isLast) {
-      _currentIndex++;
+      currentIndex++;
       notifyListeners();
     }
   }
 
   void previous() {
     if (!isFirst) {
-      _currentIndex--;
+      currentIndex--;
       notifyListeners();
     }
   }
 
   void restart() {
-    _currentIndex = 0;
-    _answers = List.filled(_questions.length, null);
+    currentIndex = 0;
+    _answers = List.filled(questions.length, null);
     notifyListeners();
   }
 }

@@ -9,6 +9,7 @@ import '../widgets/app_image.dart';
 import '../widgets/category_tag.dart';
 import '../widgets/terminal_card.dart';
 import '../widgets/theme_toggle_button.dart';
+import '../widgets/adaptive_pane.dart';
 import 'quiz_page.dart';
 
 class ResultPage extends StatelessWidget {
@@ -31,6 +32,105 @@ class ResultPage extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final gap = Responsive.u(context, 0.04);
 
+    final summary = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(
+          child: AppImage(
+            asset: 'assets/images/trophy.png',
+            fallbackIcon: Icons.emoji_events_rounded,
+            size: Responsive.u(context, 0.3),
+          ),
+        ),
+        SizedBox(height: gap),
+        Text(
+          'Misi selesai, ${quiz.userName}!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: Responsive.font(context, 0.06),
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        SizedBox(height: gap),
+        TerminalCard(
+          title: 'hasil.log',
+          child: Column(
+            children: [
+              Text(
+                '${quiz.score}/${quiz.totalQuestions}',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  fontWeight: FontWeight.w700,
+                  fontSize: Responsive.font(context, 0.15, max: 64),
+                  color: scheme.primary,
+                ),
+              ),
+              Text(
+                'Nilai: ${quiz.percentage}',
+                style: TextStyle(
+                  fontSize: Responsive.font(context, 0.04),
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+              SizedBox(height: gap * 0.6),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.u(context, 0.04),
+                  vertical: Responsive.u(context, 0.02),
+                ),
+                decoration: BoxDecoration(
+                  color: scheme.primaryContainer,
+                  borderRadius:
+                  BorderRadius.circular(Responsive.u(context, 0.03)),
+                ),
+                child: Text(
+                  'RANK: ${quiz.rank}',
+                  style: TextStyle(
+                    fontFamily: 'JetBrainsMono',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Responsive.font(context, 0.04),
+                    color: scheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    final details = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TerminalCard(
+          title: 'review.log',
+          child: Column(
+            children: [
+              for (int i = 0; i < quiz.totalQuestions; i++)
+                _ReviewRow(
+                  number: i + 1,
+                  question: quiz.questions[i],
+                  isCorrect: quiz.isCorrectAt(i),
+                ),
+            ],
+          ),
+        ),
+        SizedBox(height: gap * 1.5),
+        AppButton(
+          label: 'Main Lagi',
+          icon: Icons.replay_rounded,
+          onPressed: () => _playAgain(context),
+        ),
+        SizedBox(height: gap * 0.6),
+        AppButton(
+          label: 'Ganti Pemain',
+          icon: Icons.person_rounded,
+          filled: false,
+          onPressed: () => _changePlayer(context),
+        ),
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -38,7 +138,7 @@ class ResultPage extends StatelessWidget {
             padding: EdgeInsets.all(Responsive.u(context, 0.05)),
             child: ConstrainedBox(
               constraints:
-              BoxConstraints(maxWidth: Responsive.contentWidth(context)),
+              BoxConstraints(maxWidth: Responsive.pageWidth(context)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -46,94 +146,7 @@ class ResultPage extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: ThemeToggleButton(),
                   ),
-                  Center(
-                    child: AppImage(
-                      asset: 'assets/images/trophy.png',
-                      fallbackIcon: Icons.emoji_events_rounded,
-                      size: Responsive.u(context, 0.3),
-                    ),
-                  ),
-                  SizedBox(height: gap),
-                  Text(
-                    'Misi selesai, ${quiz.userName}!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: Responsive.font(context, 0.06),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: gap),
-                  TerminalCard(
-                    title: 'hasil.log',
-                    child: Column(
-                      children: [
-                        Text(
-                          '${quiz.score}/${quiz.totalQuestions}',
-                          style: TextStyle(
-                            fontFamily: 'JetBrainsMono',
-                            fontWeight: FontWeight.w700,
-                            fontSize: Responsive.font(context, 0.15, max: 64),
-                            color: scheme.primary,
-                          ),
-                        ),
-                        Text(
-                          'Nilai: ${quiz.percentage}',
-                          style: TextStyle(
-                            fontSize: Responsive.font(context, 0.04),
-                            color: scheme.onSurfaceVariant,
-                          ),
-                        ),
-                        SizedBox(height: gap * 0.6),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Responsive.u(context, 0.04),
-                            vertical: Responsive.u(context, 0.02),
-                          ),
-                          decoration: BoxDecoration(
-                            color: scheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(
-                                Responsive.u(context, 0.03)),
-                          ),
-                          child: Text(
-                            'RANK: ${quiz.rank}',
-                            style: TextStyle(
-                              fontFamily: 'JetBrainsMono',
-                              fontWeight: FontWeight.w700,
-                              fontSize: Responsive.font(context, 0.04),
-                              color: scheme.onPrimaryContainer,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: gap),
-                  TerminalCard(
-                    title: 'review.log',
-                    child: Column(
-                      children: [
-                        for (int i = 0; i < quiz.totalQuestions; i++)
-                          _ReviewRow(
-                            number: i + 1,
-                            question: quiz.questions[i],
-                            isCorrect: quiz.isCorrectAt(i),
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: gap * 1.5),
-                  AppButton(
-                    label: 'Main Lagi',
-                    icon: Icons.replay_rounded,
-                    onPressed: () => _playAgain(context),
-                  ),
-                  SizedBox(height: gap * 0.6),
-                  AppButton(
-                    label: 'Ganti Pemain',
-                    icon: Icons.person_rounded,
-                    filled: false,
-                    onPressed: () => _changePlayer(context),
-                  ),
+                  AdaptivePane(first: summary, second: details),
                 ],
               ),
             ),
