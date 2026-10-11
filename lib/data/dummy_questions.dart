@@ -2,7 +2,7 @@ import '../models/question.dart';
 
 const List<Question> dummyQuestions = [
   Question(
-    category: 'HARDWARE',
+    category: 'Organisasi arsitektur komputer',
     text: 'Apa kepanjangan dari CPU?',
     options: [
       'Central Process Unit',
@@ -15,7 +15,7 @@ const List<Question> dummyQuestions = [
     'CPU (Central Processing Unit) adalah otak komputer yang menjalankan instruksi program.',
   ),
   Question(
-    category: 'SISTEM BILANGAN',
+    category: 'Dasar pemrograman',
     text: 'Bilangan biner 1010 sama dengan bilangan desimal berapa?',
     options: ['8', '10', '12', '14'],
     correctIndex: 1,

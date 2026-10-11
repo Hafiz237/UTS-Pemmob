@@ -38,8 +38,8 @@ class QuizProvider extends ChangeNotifier {
   int get percentage => ((score / _questions.length) * 100).round();
 
   String get rank {
-    if (percentage >= 90) return 'Tech Wizard';
-    if (percentage >= 70) return 'Senior Engineer';
+    if (percentage >= 90) return 'Master Dev';
+    if (percentage >= 70) return 'Senior Dev';
     if (percentage >= 40) return 'Junior Dev';
     return 'Script Kiddie';
   }

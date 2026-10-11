@@ -24,9 +24,9 @@ class Responsive {
     return w;
   }
 
-  static double font(BuildContext c, double fraction) {
+  static double font(BuildContext c, double fraction, {double? max}) {
     final size = width(c) * fraction;
-    final max = isTablet(c) ? 34.0 : 28.0;
-    return size.clamp(12.0, max);
+    final limit = max ?? (isTablet(c) ? 34.0 : 28.0);
+    return size.clamp(12.0, limit);
   }
 }
