@@ -15,3 +15,12 @@
   - dapat kembali ke start page di tengah kuis.
   - tampilan hasil pilihan berganda dengan role yang sesuai dengan tingkatan nilai.
   
+## Dokumentasi:
+### credit untuk 
+- font: google font: fonts.google.com
+- images trophy: google
+- images logo: buatan sendiri dengan bantuan AI
+  
+- SS tiap page aplikasi: https://drive.google.com/drive/folders/10q5vxj-po4OyOpT3RsZtLWBKN_9pQfiS?usp=sharing
+- link mockup/prototype aplikasi: https://www.figma.com/design/AeKvuu3FTm3ybSjHyrvMUw/mockup-aplikasi-UTS?node-id=0-1&t=5ZyTyJZIa4XNWdqp-1
+
